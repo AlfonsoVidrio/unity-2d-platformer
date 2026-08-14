@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     // =========================
 
     private Rigidbody2D rb2D;
+    public Animator animator;
 
     // Stores the horizontal movement input.
     private float move;
@@ -63,6 +64,9 @@ public class Player : MonoBehaviour
     {
         // Get the Rigidbody2D component from the player.
         rb2D = GetComponent<Rigidbody2D>();
+
+        // Get the Animator component from the player.
+        animator = GetComponent<Animator>();
     }
 
 
@@ -103,6 +107,16 @@ public class Player : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
+
+        if (move != 0)
+        {
+            // Flip the player sprite based on movement direction.
+            transform.localScale = new Vector3(Mathf.Sign(move), 1, 1);
+        }
+
+        animator.SetFloat("Speed", Mathf.Abs(move));
+        animator.SetFloat("VerticalVelocity", rb2D.linearVelocity.y);
+        animator.SetBool("IsGrounded", isGrounded);
     }
 
 
